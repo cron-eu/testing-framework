@@ -41,7 +41,7 @@ abstract class AbstractBootstrap
      */
     public function __construct(CoreBootstrap $bootstrap = null)
     {
-        putenv('TYPO3_CONTEXT=Testing');
+        if (!preg_match('/^Testing\//', getenv('TYPO3_CONTEXT'))) { putenv('TYPO3_CONTEXT=Testing'); }
         $this->bootstrap = (null !== $bootstrap) ? $bootstrap : CoreBootstrap::getInstance();
     }
 
