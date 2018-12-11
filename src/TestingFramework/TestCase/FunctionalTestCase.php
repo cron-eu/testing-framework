@@ -180,6 +180,12 @@ abstract class FunctionalTestCase extends AbstractTestCase
     }
 
     /**
+     * Pre set up hook after test system instance- and basic paths exist
+     * but before configuration is generated
+     */
+    public function preSetUpHook() {}
+
+    /**
      * Setup creates a test instance and database
      *
      * This method has to be called with parent::setUp() in your test cases
@@ -197,7 +203,8 @@ abstract class FunctionalTestCase extends AbstractTestCase
             $this->testExtensionsToLoad,
             $this->pathsToLinkInTestInstance,
             $this->configurationToUseInTestInstance,
-            $this->additionalFoldersToCreate
+            $this->additionalFoldersToCreate,
+            function() { return $this->preSetUpHook(); }
         );
     }
 

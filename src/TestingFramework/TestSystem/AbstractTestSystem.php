@@ -126,6 +126,7 @@ abstract class AbstractTestSystem
      * @param array $pathsToLinkInTestSystem Array of source => destination path pairs to be linked
      * @param array $configurationToUse Array of TYPO3_CONF_VARS that need to be overridden
      * @param array $additionalFoldersToCreate Array of folder paths to be created
+     * @param callable|null $preSetUpHook
      * @return void
      */
     public function setUp(
@@ -133,7 +134,8 @@ abstract class AbstractTestSystem
         array $testExtensionsToLoad,
         array $pathsToLinkInTestSystem,
         array $configurationToUse,
-        array $additionalFoldersToCreate
+        array $additionalFoldersToCreate,
+        $preSetUpHook = null
     ) {
         $this->registerNtfStreamWrapper();
         $this->setTypo3Context();
@@ -147,6 +149,7 @@ abstract class AbstractTestSystem
             $this->setUpSystemCoreLinks();
             $this->linkTestExtensionsToSystem($testExtensionsToLoad);
             $this->linkPathsInTestSystem($pathsToLinkInTestSystem);
+            if (is_callable($preSetUpHook)) { $preSetUpHook(); }
             $this->setUpLocalConfiguration($configurationToUse);
             $this->setUpPackageStates($coreExtensionsToLoad, $testExtensionsToLoad);
             $this->includeAndStartCoreBootstrap();
