@@ -12,12 +12,18 @@ namespace Nimut\Testbase\ViewHelpers;
  * LICENSE file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-class RenderChildrenViewHelper extends AbstractViewHelper implements CompilableInterface
+class RenderChildrenViewHelper extends AbstractViewHelper
 {
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+
+        $this->registerArgument('value', 'string', 'A value taken by this ViewHelper');
+    }
+
     public function render()
     {
         return self::renderStatic(
@@ -35,6 +41,10 @@ class RenderChildrenViewHelper extends AbstractViewHelper implements CompilableI
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
+        if (isset($arguments['value'])) {
+            return $arguments['value'];
+        }
+
         return $renderChildrenClosure();
     }
 }
